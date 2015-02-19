@@ -44,10 +44,10 @@ public class Integrator {
         double segmentLength = (end - start) / threadsAmount;
 
         for(int i = 0; i < threadsAmount - 1; ++i) {
-            System.out.println("Segment start: " + (start + i * segmentLength) + ", segment finish: " + (start + (i + 1) * segmentLength));
+//            System.out.println("Segment start: " + (start + i * segmentLength) + ", segment finish: " + (start + (i + 1) * segmentLength));
             threads.add(new Thread(this.new IntegrateTask(start + i * segmentLength, start + (i + 1) * segmentLength)));
         }
-        System.out.println("Segment start: " + (start + segmentLength * (threadsAmount - 1)) + ", segment finish: " + (start + segmentLength * threadsAmount));
+//        System.out.println("Segment start: " + (start + segmentLength * (threadsAmount - 1)) + ", segment finish: " + (start + segmentLength * threadsAmount));
         integratePart(start + segmentLength * (threadsAmount - 1), start + segmentLength * threadsAmount);
 
         for(Thread t: threads) {
@@ -90,13 +90,12 @@ public class Integrator {
         }
 
         antiderivativeParallelResult = antiderivative(endPart) - antiderivative(startPart);
-        antiderivativeParallelResult = antiderivativeParallelResult;
     }
 
     private double func(double x) {
         double helper = 1.2;
 
-        for(int i = 0; i < 10000; ++i) {
+        for(int i = 0; i < 100000; ++i) {
             helper += i / (i + 1);
         }
 

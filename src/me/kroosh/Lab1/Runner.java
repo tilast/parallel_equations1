@@ -1,111 +1,51 @@
 package me.kroosh.Lab1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by ihorkroosh on 2/18/15.
  */
 public class Runner {
     public static void main(String[] args) {
-        long startTime = 0;
-        long msecTimeElapsed = 0;
+        long startTimeSequential = 0;
+        long msecTimeElapsedSequential = 0;
+        long startTimeParallel = 0;
+        long msecTimeElapsedParallel = 0;
+        double acceleration = 1;
+        double efficiency = 1;
 
-        System.out.println("With 0.001 step: ");
+        double steps[] = {0.01, 0.001, 0.005};
+        int threadAmounts[] = {5, 10, 15};
 
-            Integrator first = new Integrator(0.001, 2, 3);
-            startTime = System.nanoTime();
-            first.integrateSequetially();
-            msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("Time taken to sequential: " + msecTimeElapsed);
-            System.out.println("=======");
+//        List<Integrator> integrators = new ArrayList<>();
+        Integrator current;
 
-            startTime = System.nanoTime();
-            first.integrateParallel(10);
-            System.out.println("Parallel equation: " + first.getParallelResult());
-            msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("Time taken to parallel: " + msecTimeElapsed);
+        for(int i = 0; i < steps.length; ++i) {
+            for(int j = 0; j < threadAmounts.length; ++j) {
+                System.out.println("With " + steps[i] + " step: ");
 
-        System.out.println("\n\n");
+                current = new Integrator(steps[i], 2, 3);
 
-        System.out.println("With 0.0001 step: ");
+                startTimeSequential = System.nanoTime();
+                current.integrateSequetially();
+                msecTimeElapsedSequential = (System.nanoTime() - startTimeSequential) / 1000000;
+                System.out.println("Time taken to sequential: " + msecTimeElapsedSequential);
+                System.out.println("=======");
 
-            Integrator second = new Integrator(0.0001, 2, 3);
-            startTime = System.nanoTime();
-            second.integrateSequetially();
-            msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("Time taken to sequential: " + msecTimeElapsed);
-            System.out.println("=======");
+                startTimeParallel = System.nanoTime();
+                current.integrateParallel(threadAmounts[j]);
+                System.out.println("Parallel equation with " + threadAmounts[j] +" threads: " + current.getParallelResult());
+                msecTimeElapsedParallel = (System.nanoTime() - startTimeParallel) / 1000000;
+                System.out.println("Time taken to parallel: " + msecTimeElapsedParallel);
 
-            startTime = System.nanoTime();
-            second.integrateParallel(10);
-            System.out.println("Parallel equation: " + second.getParallelResult());
-            msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("Time taken to parallel: " + msecTimeElapsed);
+                acceleration = (double)msecTimeElapsedSequential / (double)msecTimeElapsedParallel;
+                efficiency   = acceleration / (double)threadAmounts[j];
 
-        System.out.println("\n\n");
+                System.out.println("Acceleration: " + acceleration + ", efficiency: " + efficiency);
 
-        System.out.println("With 0.0005 step: ");
-        Integrator third = new Integrator(0.0005, 2, 3);
-            startTime = System.nanoTime();
-            third.integrateSequetially();
-            msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("Time taken to sequential: " + msecTimeElapsed);
-            System.out.println("=======");
-
-            startTime = System.nanoTime();
-            third.integrateParallel(10);
-            System.out.println("Parallel equation: " + third.getParallelResult());
-            msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("Time taken to parallel: " + msecTimeElapsed);
-
-        System.out.println("\n\n");
-
-        System.out.println("With 0.001 step: ");
-
-        Integrator first5 = new Integrator(0.001, 2, 3);
-        startTime = System.nanoTime();
-        first.integrateSequetially();
-        msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-        System.out.println("Time taken to sequential: " + msecTimeElapsed);
-        System.out.println("=======");
-
-        startTime = System.nanoTime();
-        first5.integrateParallel(5);
-        System.out.println("Parallel equation: " + first5.getParallelResult());
-        msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-        System.out.println("Time taken to parallel: " + msecTimeElapsed);
-
-        System.out.println("\n\n");
-
-        System.out.println("With 0.0001 step: ");
-
-        Integrator second5 = new Integrator(0.0001, 2, 3);
-        startTime = System.nanoTime();
-        second5.integrateSequetially();
-        msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-        System.out.println("Time taken to sequential: " + msecTimeElapsed);
-        System.out.println("=======");
-
-        startTime = System.nanoTime();
-        second5.integrateParallel(5);
-        System.out.println("Parallel equation: " + second5.getParallelResult());
-        msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-        System.out.println("Time taken to parallel: " + msecTimeElapsed);
-
-        System.out.println("\n\n");
-
-        System.out.println("With 0.0005 step: ");
-        Integrator third5 = new Integrator(0.0005, 2, 3);
-        startTime = System.nanoTime();
-        third5.integrateSequetially();
-        msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-        System.out.println("Time taken to sequential: " + msecTimeElapsed);
-        System.out.println("=======");
-
-        startTime = System.nanoTime();
-        third5.integrateParallel(5);
-        System.out.println("Parallel equation: " + third5.getParallelResult());
-        msecTimeElapsed = (System.nanoTime() - startTime) / 1000000;
-        System.out.println("Time taken to parallel: " + msecTimeElapsed);
-
-        System.out.println("\n\n");
+                System.out.println("\n\n");
+            }
+        }
     }
 }
