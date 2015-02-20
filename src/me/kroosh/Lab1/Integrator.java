@@ -35,7 +35,7 @@ public class Integrator {
         sequentialResult = leftRectanglesResult;
 
         System.out.println("Left rectangles: " + leftRectanglesResult);
-        System.out.println("Antiderivative:  " + (antiderivative(end) - antiderivative(start)));
+//        System.out.println("Antiderivative:  " + (antiderivative(end) - antiderivative(start)));
     }
 
     public void integrateParallel(int threadsAmount) {
@@ -43,16 +43,17 @@ public class Integrator {
 
         double segmentLength = (end - start) / threadsAmount;
 
-        for(int i = 0; i < threadsAmount - 1; ++i) {
+        for(int i = 0; i < threadsAmount; ++i) {
 //            System.out.println("Segment start: " + (start + i * segmentLength) + ", segment finish: " + (start + (i + 1) * segmentLength));
             threads.add(new Thread(this.new IntegrateTask(start + i * segmentLength, start + (i + 1) * segmentLength)));
         }
 //        System.out.println("Segment start: " + (start + segmentLength * (threadsAmount - 1)) + ", segment finish: " + (start + segmentLength * threadsAmount));
-        integratePart(start + segmentLength * (threadsAmount - 1), start + segmentLength * threadsAmount);
 
         for(Thread t: threads) {
             t.start();
         }
+
+//        integratePart(start + segmentLength * (threadsAmount - 1), start + segmentLength * threadsAmount);
 
         for(Thread t: threads) {
             try {
@@ -86,16 +87,16 @@ public class Integrator {
         for(double i = startPart; i < endPart; i = i + h) {
             tmp = func(i) * h;
             parallelResult += tmp;
-            localParallelResult += tmp;
+//            localParallelResult += tmp;
         }
 
-        antiderivativeParallelResult = antiderivative(endPart) - antiderivative(startPart);
+//        antiderivativeParallelResult = antiderivative(endPart) - antiderivative(startPart);
     }
 
     private double func(double x) {
         double helper = 1.2;
 
-        for(int i = 0; i < 100000; ++i) {
+        for(int i = 0; i < 10000000; ++i) {
             helper += i / (i + 1);
         }
 

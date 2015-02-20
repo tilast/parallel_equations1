@@ -15,10 +15,11 @@ public class Runner {
         double acceleration = 1;
         double efficiency = 1;
 
-        double steps[] = {0.01, 0.001, 0.005};
-        int threadAmounts[] = {5, 10, 15};
+//        double steps[] = {0.01, 0.001, 0.005};
+//        int threadAmounts[] = {5, 10, 15};
+        double steps[] = { 0.001 };
+        int threadAmounts[] = {2, 3, 4, 5, 8,  10};
 
-//        List<Integrator> integrators = new ArrayList<>();
         Integrator current;
 
         for(int i = 0; i < steps.length; ++i) {
@@ -40,7 +41,7 @@ public class Runner {
                 System.out.println("Time taken to parallel: " + msecTimeElapsedParallel);
 
                 acceleration = (double)msecTimeElapsedSequential / (double)msecTimeElapsedParallel;
-                efficiency   = acceleration / (double)threadAmounts[j];
+                efficiency   = acceleration / 4;
 
                 System.out.println("Acceleration: " + acceleration + ", efficiency: " + efficiency);
 
