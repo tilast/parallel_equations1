@@ -96,8 +96,8 @@ public class Integrator {
     private double func(double x) {
         double helper = 1.2;
 
-        for(int i = 0; i < 10000000; ++i) {
-            helper += i / (i + 1);
+        for(int i = 0; i < 10000; ++i) {
+            helper += x + i / (i + 1);
         }
 
         return Math.pow(x, 3.0) / Math.sqrt(Math.pow(Math.pow(x, 2.0) + 9.0, 3.0)) + (helper * 0);
